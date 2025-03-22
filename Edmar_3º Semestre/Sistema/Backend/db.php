@@ -1,4 +1,4 @@
-<?php
+<?php // Banco de dados
 $servername = "root";
 $username = "root";
 $password = "Root";

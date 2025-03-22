@@ -22,3 +22,22 @@ document.getElementById("registerForm")?.addEventListener("submit", function(eve
         alert("Algo deu errado. Por favor, tente novamente.");
     });
 });
+
+// pagina login
+
+document.getElementById("loginForm")?.addEventListener("submit", function(event){
+    event.preventDefault();
+    let formData = new FormData();
+    formData.append("username", document.getElementById("username").value);
+    formData.append("password", document.getElementById("password").value);
+    
+    fetch("backend/login.php", {method: "POST", body:formData})
+     .then(response => response.json())
+     .then(data => {
+        if(data.status === "success"){
+            window.location.href = "index.php";
+        }else {
+            alert("Erro: " + data.message);
+        }
+     })
+});

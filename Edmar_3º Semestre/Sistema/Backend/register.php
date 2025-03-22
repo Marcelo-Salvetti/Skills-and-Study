@@ -1,4 +1,4 @@
-<?php
+<?php // Registro no banco de dados
 include 'dp.php';
 
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
