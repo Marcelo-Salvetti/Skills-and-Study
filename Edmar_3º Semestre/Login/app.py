@@ -1,4 +1,4 @@
-from flask import flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session
 import bcrypt
 from config import get_db_connection
 
@@ -25,4 +25,4 @@ def register():
     conn.close()
 
     return redirect("/")
-return render_template("register.html")
+    return render_template("register.html")
