@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Busca de Países</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .country-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            display: inline-block;
+            text-align: left;
+            max-width: 400px;
+        }
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Informações sobre Países</h1>
+
+    
+    <input type="text" id="countryInput" placeholder="Digite o nome do país">
+
+    
+    <button onclick="buscarPais()">Buscar</button>
+
+    
+    <div id="resultado" class="country-info"></div>
+
+    <script>
+        
+        function buscarPais() {
+            const nomePais = document.getElementById('countryInput').value.trim();
+
+            
+            if (nomePais === "") {
+                alert("Por favor, digite o nome de um país.");
+                return;
+            }
+
+            
+            const url = `https://restcountries.com/v3.1/name/${nomePais}`;
+
+            
+            fetch(url)
+                .then(resposta => {
+                    if (!resposta.ok) {
+                        throw new Error("País não encontrado.");
+                    }
+                    return resposta.json();
+                })
+                .then(dados => {
+                    
+                    const pais = dados[0];
+
+                    
+                    const nome = pais.name.common;
+                    const nomeOficial = pais.name.official;
+                    const bandeira = pais.flags.svg;
+                    const capital = pais.capital ? pais.capital[0] : "N/A";
+                    const populacao = pais.population.toLocaleString();
+                    const regiao = pais.region;
+                    const linguas = pais.languages ? Object.values(pais.languages).join(", ") : "N/A";
+
+                    
+                    const resultadoHTML = `
+                        <h2>${nomeOficial}</h2>
+                        <img src="${bandeira}" alt="Bandeira de ${nome}" />
+                        <p><strong>Capital:</strong> ${capital}</p>
+                        <p><strong>População:</strong> ${populacao}</p>
+                        <p><strong>Região:</strong> ${regiao}</p>
+                        <p><strong>Línguas:</strong> ${linguas}</p>
+                    `;
+
+                    
+                    document.getElementById('resultado').innerHTML = resultadoHTML;
+                })
+                .catch(erro => {
+                    
+                    document.getElementById('resultado').innerHTML = `<p style="color:red;">Erro: ${erro.message}</p>`;
+                });
+        }
+
+        
+        document.getElementById('countryInput').addEventListener('keypress', function(event) {
+            if (event.key === "Enter") {
+                buscarPais();
+            }
+        });
+    </script>
+
+</body>
+</html>
